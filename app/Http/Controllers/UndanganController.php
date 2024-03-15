@@ -59,15 +59,15 @@ class UndanganController extends Controller
 		//$no_barcode = $r->no_barcode;
 		$kategori 	= $r->kategori;
 		$noreg 		= $r->noreg;
-		//$jml 		= $r->jml;
-		// $vege		= $r->jmlvege;
+		$jml 		= $r->jml;
+		$vege		= $r->jmlvege;
 		//$vege2		= $r->vege2;
 		// $jml		= $r->jml;
-		// $flgangpao	= $r->angpao;
+		$flgangpao	= $r->angpao;
 		//$hadir2		= $r->hadir2;
 		// $fgrapid	= $r->fgrapid;
 		// $ktp1		= $r->ktp1;
-		// $ktp2		= $r->ktp2;
+		$souvenir	= $r->souvenir;
 		date_default_timezone_set('Asia/Jakarta');
 		$tgl		= date('Y-m-d H:i:s');
 		
@@ -75,7 +75,7 @@ class UndanganController extends Controller
 		// $simpan2 = M_Undangan::submit($vuser,$kategori,2,$noreg,$vege2,$hadir2,$tgl);
 		
 		// return response()->json([$simpan1, $simpan2]);
-		$simpan = M_Undangan::submit($vuser,$kategori,$noreg,$vege,$jml,$tgl, $flgangpao);
+		$simpan = M_Undangan::submit($vuser,$kategori,$noreg,$vege,$jml,$tgl, $flgangpao, $souvenir);
 		return response()->json($simpan);
 	}
 	
@@ -119,14 +119,14 @@ class UndanganController extends Controller
 	public function saveUndanganTambahan(Request $r)
 	{	
 		$vuser 			= $r->auth->sub;
-		$periode 	 	= $r->period;
+		$periode 	 	= $r->periode;
 		$kategori	 	= $r->kategori;
 		$zona		 	= $r->zona;
 		$nama	 	 	= $r->nama;
 		$jml_undangan 	= $r->jml;
 		$lokasi_parkir 	= $r->parkir;
-		$email 	= $r->email;
-		$hp 	= $r->hp;
+		$email      	= $r->email;
+		$hp         	= $r->hp;
 		$perusahaan 	= $r->perusahaan;
 		$souvenir 	    = $r->souvenir;
 		

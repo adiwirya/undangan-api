@@ -33,6 +33,7 @@ $router->group(['prefix' => '/undangan'], function () use ($router) {
 
         $router->get('getDaftarHadir', ['uses' => 'LapUndangan@get_daftar_hadir']);
         $router->get('getDaftarBelum', ['uses' => 'LapUndangan@get_daftar_belum']);
+        $router->get('getDaftarMelebihi', ['uses' => 'LapUndangan@get_daftar_melebihi']);
         $router->get('getRekapUndangan', ['uses' => 'LapUndangan@get_rekap_undangan']);
 
         $router->get('getParkir',  ['uses' => 'UndanganController@getParkir']);

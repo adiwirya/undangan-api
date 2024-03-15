@@ -163,12 +163,12 @@ class M_undangan extends Model
 	}
 
 	//public static function submit($vuser,$kategori,$nourut,$noreg,$vege,$hadir,$tgl,$jml = null)
-	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao)
+	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao,$souvenir)
 	{
 		$data = [
 			// 'JUMLAH'		=> $jml,
 			'HADIR'			=> 'Y',
-			'JML_VEGETARIAN_ACARA'	=> $vege,
+			// 'JML_VEGETARIAN_ACARA'	=> $vege,
 			'JUMLAH'			=> $jml,
 			// 'FLAG_RAPID'	=> $fgrapid,
 			//'KTP_1'			=> $ktp1,
@@ -176,7 +176,8 @@ class M_undangan extends Model
 			'JAM_DATANG'	=> $tgl,
 			'USER_UPDATE'	=> $vuser,
 			'TGL_UPDATE'	=> $tgl,
-			'FLAG_ANGPAO'	=> $flgangpao	
+			'FLAG_ANGPAO'	=> $flgangpao,	
+			'TAMBAH_GOODIEBAG'	=> $souvenir	
 		];
 		//if ($jml != null) $data['JUMLAH'] = $jml;
 
@@ -318,6 +319,16 @@ class M_undangan extends Model
 		FROM Register_Tamu B
 		WHERE HADIR = 'N' and kategori= '".$kategori."'
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0)  ----KONFIRM TDK HADIR 
+			UNION ALL 
+		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
+		FROM Register_Tamu B WHERE 1=1
+	AND KATEGORI = '".$kategori."'
+	AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) < 0) --- MELEBIHI JUMLAH PAX
+		UNION ALL 
+		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
+		FROM Register_Tamu B WHERE 1=1
+	AND KATEGORI = '".$kategori."'
+	AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) > 0) --- KURANG JUMLAH PAX
 	    	");
 				
 		return $q;
