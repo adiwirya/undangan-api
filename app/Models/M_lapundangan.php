@@ -24,7 +24,7 @@ class M_lapundangan extends Model
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND CONVERT(VARCHAR(10),XA.JAM_DATANG,126)	 = '".$tglhadir."'
                         AND LTRIM(RTRIM(XA.HADIR))					 = 'Y'
-                        AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
+                        AND ISNULL(JML_KONFIRMASI_HADIR,0) >= 0
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1
@@ -34,7 +34,7 @@ class M_lapundangan extends Model
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')   != ''
                 AND CONVERT(VARCHAR(10),A.JAM_DATANG,126)    = '".$tglhadir."' 
                 AND LTRIM(RTRIM(A.HADIR))                    = 'Y'
-                AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
+                AND ISNULL(JML_KONFIRMASI_HADIR,0) >= 0
             GROUP BY
                 ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
 		
@@ -69,7 +69,7 @@ class M_lapundangan extends Model
                     AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
                     AND CONVERT(VARCHAR(10),A.JAM_DATANG,126)	 = '".$tglhadir."' 
                     AND LTRIM(RTRIM(A.HADIR))					 = 'Y'
-                    AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
+                    AND ISNULL(JML_KONFIRMASI_HADIR,0) >= 0
  
             ) V_HADIR
             WHERE 1=1
@@ -247,4 +247,40 @@ class M_lapundangan extends Model
          return $q;
 
     }
+
+    public static function  get_total_rekap($kategori){
+		 $q = DB::select("
+                    
+        SELECT 'Total Undangan' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
+        from REGISTER_TAMU
+        where KATEGORI = '".$kategori."' --TOTAL UNDANGAN
+        UNION ALL
+        SELECT 'Total Hadir' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
+        FROM REGISTER_TAMU
+        WHERE KATEGORI = '".$kategori."' 
+        AND HADIR ='Y' -- HADIR
+        AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
+        UNION ALL 
+        SELECT 'Total Belum Hadir' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
+        FROM REGISTER_TAMU
+        WHERE KATEGORI = '".$kategori."'
+        AND ISNULL(HADIR,'') = '' --BLM HADIR
+        AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
+        UNION ALL 
+        SELECT 'Total Tambahan' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
+        FROM REGISTER_TAMU
+        WHERE KATEGORI = '".$kategori."'
+        AND HADIR ='Y' -- HADIR
+        AND ISNULL(JML_KONFIRMASI_HADIR,0) >= 0
+        AND USER_ENTRY IN  (SELECT CAST(ID AS VARCHAR(50)) FROM users) -- TOTAL TAMBAHAN
+        UNION ALL
+        Select 'Total Souvenir' AS NAMA, ISNULL(SUM(TAMBAH_GOODIEBAG),0) AS JUMLAH
+        from REGISTER_TAMU
+        where KATEGORI = '".$kategori."' --TOTAL SOUVENIR
+
+		 ");
+
+        return $q;
+	 }
+    
 }

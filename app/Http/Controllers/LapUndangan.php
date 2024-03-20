@@ -207,6 +207,19 @@ class LapUndangan extends Controller
 
 		return $result;
 	}
-    
+
+
+	public function get_total_rekap(Request $r)
+	{
+		$vuser 		= $r->auth->sub;
+		$kategori 	= $r->kategori;
+		
+		$get_total_rekap         = M_lapundangan::get_total_rekap($kategori);
+
+	    return response()->json($get_total_rekap)->setEncodingOptions(JSON_NUMERIC_CHECK);
+
+	}
+
+	 
 
 }
