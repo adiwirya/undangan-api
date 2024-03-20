@@ -68,6 +68,7 @@ class UndanganController extends Controller
 		// $fgrapid	= $r->fgrapid;
 		// $ktp1		= $r->ktp1;
 		$souvenir	= $r->souvenir;
+		$celengan	= $r->celengan;
 		date_default_timezone_set('Asia/Jakarta');
 		$tgl		= date('Y-m-d H:i:s');
 		
@@ -75,7 +76,7 @@ class UndanganController extends Controller
 		// $simpan2 = M_Undangan::submit($vuser,$kategori,2,$noreg,$vege2,$hadir2,$tgl);
 		
 		// return response()->json([$simpan1, $simpan2]);
-		$simpan = M_Undangan::submit($vuser,$kategori,$noreg,$vege,$jml,$tgl, $flgangpao, $souvenir);
+		$simpan = M_Undangan::submit($vuser,$kategori,$noreg,$vege,$jml,$tgl, $flgangpao, $souvenir, $celengan);
 		return response()->json($simpan);
 	}
 	
@@ -155,14 +156,5 @@ class UndanganController extends Controller
 		return response()->json($getListZona);
 	}
 	
-	public function getJmlUndangan(Request $r)
-	{	
-		$vuser = $r->auth->sub;
-
-		$kategori 	= $r->kategori;
-
-		$getJmlUndangan 	= M_undangan::getJmlUndangan($kategori);
-		
-		return response()->json($getJmlUndangan);
-	}
+	
 }

@@ -37,6 +37,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_OPT1)),'-') AS FLAG_PRINT"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS CELENGAN"),
 			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
 						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
 		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
@@ -85,6 +86,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_OPT1)),'-') AS FLAG_PRINT"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS CELENGAN"),
 			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
 						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
 		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
@@ -138,6 +140,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS CELENGAN"),
 			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
 						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
 		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
@@ -163,7 +166,7 @@ class M_undangan extends Model
 	}
 
 	//public static function submit($vuser,$kategori,$nourut,$noreg,$vege,$hadir,$tgl,$jml = null)
-	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao,$souvenir)
+	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao,$souvenir, $celengan)
 	{
 		$data = [
 			// 'JUMLAH'		=> $jml,
@@ -177,7 +180,8 @@ class M_undangan extends Model
 			'USER_UPDATE'	=> $vuser,
 			'TGL_UPDATE'	=> $tgl,
 			'FLAG_ANGPAO'	=> $flgangpao,	
-			'TAMBAH_GOODIEBAG'	=> $souvenir	
+			'TAMBAH_GOODIEBAG'	=> $souvenir,	
+			'KET_OPT1'	=> $celengan	
 		];
 		//if ($jml != null) $data['JUMLAH'] = $jml;
 
@@ -298,43 +302,5 @@ class M_undangan extends Model
 		return $q;
 	}
 
-	public static function getJmlUndangan($kategori)
-	{
-		$q = DB::SELECT("
-		(SELECT COUNT(NO_REGISTER) AS JUMLAH, COALESCE(SUM(JML_KONFIRMASI_HADIR),0) PAX
-		FROM Register_Tamu where kategori= '".$kategori."'
-		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0) ----TOTAL UNDANGAN
-			UNION ALL
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JUMLAH),0) AS PAX
-		FROM Register_Tamu B
-		WHERE HADIR = 'Y' and kategori= '".$kategori."'
-		AND (
-				ISNULL(JML_KONFIRMASI_HADIR,0) > 0
-			  OR ( ISNULL(JML_KONFIRMASI_HADIR,0) >= 0) AND USER_ENTRY IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
-			)
-		) ----TOTAL HADIR 	
-			UNION ALL
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JML_KONFIRMASI_HADIR),0) AS PAX
-		FROM Register_Tamu B
-		WHERE ISNULL(HADIR,'') = '' and kategori= '".$kategori."'
-		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0) ----BELUM HADIR
-			UNION ALL
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JML_KONFIRMASI_HADIR),0) AS PAX
-		FROM Register_Tamu B
-		WHERE HADIR = 'N' and kategori= '".$kategori."'
-		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0)  ----KONFIRM TDK HADIR 
-			UNION ALL 
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
-		FROM Register_Tamu B WHERE 1=1
-	AND KATEGORI = '".$kategori."'
-	AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) < 0) --- MELEBIHI JUMLAH PAX
-		UNION ALL 
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
-		FROM Register_Tamu B WHERE 1=1
-	AND KATEGORI = '".$kategori."'
-	AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) > 0) --- KURANG JUMLAH PAX
-	    	");
-				
-		return $q;
-	}
+	
 }

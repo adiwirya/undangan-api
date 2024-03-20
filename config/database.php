@@ -80,10 +80,10 @@ return [
 
         'UNDANGAN' => [
             'driver'    => 'sqlsrv',
-            'host'      => '35.247.151.208',
+            'host'      => '10.11.14.215',
 			// 'host'      => '.',
             'port'      => '1433',
-            'database'  => 'Register_Tamu',
+            'database'  => 'register_tamu_desktop',
             'username'  => 'sa',
             'password'  => 'mir4cle',
             'charset'   => 'utf8',

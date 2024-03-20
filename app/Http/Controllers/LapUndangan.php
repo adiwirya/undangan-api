@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\M_lapundangan;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use Log;
 
 class LapUndangan extends Controller
 {
@@ -17,6 +18,17 @@ class LapUndangan extends Controller
    * @return void
    */
 	public function __construct(){}
+
+	public function getJmlUndangan(Request $r)
+	{	
+		$vuser = $r->auth->sub;
+
+		$kategori 	= $r->kategori;
+
+		$getJmlUndangan 	= M_lapundangan::getJmlUndangan($kategori);
+		
+		return response()->json($getJmlUndangan);
+	}
 
     public function get_zona_hadir(Request $r)
 	{
@@ -132,7 +144,6 @@ class LapUndangan extends Controller
 			$tempBlmHadir2 = (array)clone (object)$tempBlmHadir;
 
             $r2->vzona = $b["KODE_WARNA"];
-
 			$b["DETAIL"] = $this->get_dtl_blmhadir($r2)["DETAIL"];			
 		}
 
@@ -162,6 +173,7 @@ class LapUndangan extends Controller
 			$b = (array)$b;
 			
 			$tempMelebihi2 = (array)clone (object)$tempMelebihi;
+			Log::info('zona Kode Warna: '.$r2->vzona);
 
             $r2->vzona = $b["KODE_WARNA"];
 
@@ -169,6 +181,7 @@ class LapUndangan extends Controller
 		}
 
 		return response()->json($tmpObjb)->setEncodingOptions(JSON_NUMERIC_CHECK);
+		
     }
 
 	public function get_zona_melebihi(Request $r){
@@ -176,7 +189,7 @@ class LapUndangan extends Controller
 		$kategori 	= $r->kategori;
 
 
-		$get_zona_melebihi 	        = M_lapundangan::get_zona_melebihi($kategori);
+		$get_zona_melebihi         = M_lapundangan::get_zona_melebihi($kategori);
 		$get_zona_melebihi_array    = array();
 		foreach ($get_zona_melebihi as $get_zona_melebihi_row) {
 			$get_zona_melebihi_array[] = $get_zona_melebihi_row;
@@ -194,8 +207,184 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-
+		Log::info('dtl Kode Warna: '.$vzona);
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_melebihi($kategori,$vzona);
+		
+		$get_dtl_undangan_array = array();
+		foreach ($get_dtl_undangan as $get_dtl_undangan_row) {
+			$get_dtl_undangan_array[] = $get_dtl_undangan_row;
+		}
+
+		$result = array(
+			'DETAIL' => $get_dtl_undangan_array
+		);
+
+		return $result;
+	}
+	 public function get_daftar_tambahan(Request $r)
+	{
+		$debug 			= [];
+		$tmpObjb 		= $this->get_zona_tambahan($r);
+		$temptambahan	= $this->get_dtl_tambahan($r);
+
+		$r2 = clone $r;
+
+		foreach($tmpObjb["DATA_ZONA"] as &$b) {
+			$b = (array)$b;
+			$temptambahan2 = (array)clone (object)$temptambahan;
+			
+			Log::info('zona Kode Warna: '.$r2->vzona);
+            $r2->vzona = $b["KODE_WARNA"];
+			
+			$b["DETAIL"] = $this->get_dtl_tambahan($r2)["DETAIL"];			
+		}
+
+		return response()->json($tmpObjb)->setEncodingOptions(JSON_NUMERIC_CHECK);
+		
+    }
+
+	public function get_zona_tambahan(Request $r){
+		$vuser 	    = $r->auth->sub;
+		$kategori 	= $r->kategori;
+
+
+		$get_zona_tambahan         = M_lapundangan::get_zona_tambahan($kategori);
+		$get_zona_tambahan_array    = array();
+		foreach ($get_zona_tambahan as $get_zona_tambahan_row) {
+			$get_zona_tambahan_array[] = $get_zona_tambahan_row;
+		}
+
+		$result = array(
+			'DATA_ZONA' => $get_zona_tambahan_array
+		);
+
+		return $result;
+	}
+
+	public function get_dtl_tambahan(Request $r){
+		$vuser 		= $r->auth->sub;
+        $tglhadir 	= $r->tglhadir;
+        $vzona 	    = $r->vzona;
+		$kategori 	= $r->kategori;
+
+		Log::info('dtl Kode Warna: '.$vzona);
+		$get_dtl_undangan 		= M_lapundangan::get_dtl_tambahan($kategori,$vzona);
+		$get_dtl_undangan_array = array();
+		foreach ($get_dtl_undangan as $get_dtl_undangan_row) {
+			$get_dtl_undangan_array[] = $get_dtl_undangan_row;
+		}
+
+		$result = array(
+			'DETAIL' => $get_dtl_undangan_array
+		);
+
+		return $result;
+	}
+	 public function get_daftar_kurang(Request $r)
+	{
+		$debug 			= [];
+		$tmpObjb 		= $this->get_zona_kurang($r);
+		$tempkurang	= $this->get_dtl_kurang($r);
+
+		$r2 = clone $r;
+
+		foreach($tmpObjb["DATA_ZONA"] as &$b) {
+			$b = (array)$b;
+			
+			$tempkurang2 = (array)clone (object)$tempkurang;
+
+            $r2->vzona = $b["KODE_WARNA"];
+
+			$b["DETAIL"] = $this->get_dtl_kurang($r2)["DETAIL"];			
+		}
+
+		return response()->json($tmpObjb)->setEncodingOptions(JSON_NUMERIC_CHECK);
+		
+    }
+
+	public function get_zona_kurang(Request $r){
+		$vuser 	    = $r->auth->sub;
+		$kategori 	= $r->kategori;
+
+
+		$get_zona_kurang         = M_lapundangan::get_zona_kurang($kategori);
+		$get_zona_kurang_array    = array();
+		foreach ($get_zona_kurang as $get_zona_kurang_row) {
+			$get_zona_kurang_array[] = $get_zona_kurang_row;
+		}
+
+		$result = array(
+			'DATA_ZONA' => $get_zona_kurang_array
+		);
+
+		return $result;
+	}
+
+	public function get_dtl_kurang(Request $r){
+		$vuser 		= $r->auth->sub;
+        $tglhadir 	= $r->tglhadir;
+        $vzona 	    = $r->vzona;
+		$kategori 	= $r->kategori;
+
+		$get_dtl_undangan 		= M_lapundangan::get_dtl_kurang($kategori,$vzona);
+		$get_dtl_undangan_array = array();
+		foreach ($get_dtl_undangan as $get_dtl_undangan_row) {
+			$get_dtl_undangan_array[] = $get_dtl_undangan_row;
+		}
+
+		$result = array(
+			'DETAIL' => $get_dtl_undangan_array
+		);
+
+		return $result;
+	}
+	 public function get_daftar_tidak_hadir(Request $r)
+	{
+		$debug 			= [];
+		$tmpObjb 		= $this->get_zona_tidak_hadir($r);
+		$temptidak_hadir	= $this->get_dtl_tidak_hadir($r);
+
+		$r2 = clone $r;
+
+		foreach($tmpObjb["DATA_ZONA"] as &$b) {
+			$b = (array)$b;
+			
+			$temptidak_hadir2 = (array)clone (object)$temptidak_hadir;
+
+            $r2->vzona = $b["KODE_WARNA"];
+
+			$b["DETAIL"] = $this->get_dtl_tidak_hadir($r2)["DETAIL"];			
+		}
+
+		return response()->json($tmpObjb)->setEncodingOptions(JSON_NUMERIC_CHECK);
+		
+    }
+
+	public function get_zona_tidak_hadir(Request $r){
+		$vuser 	    = $r->auth->sub;
+		$kategori 	= $r->kategori;
+
+
+		$get_zona_tidak_hadir         = M_lapundangan::get_zona_tidak_hadir($kategori);
+		$get_zona_tidak_hadir_array    = array();
+		foreach ($get_zona_tidak_hadir as $get_zona_tidak_hadir_row) {
+			$get_zona_tidak_hadir_array[] = $get_zona_tidak_hadir_row;
+		}
+
+		$result = array(
+			'DATA_ZONA' => $get_zona_tidak_hadir_array
+		);
+
+		return $result;
+	}
+
+	public function get_dtl_tidak_hadir(Request $r){
+		$vuser 		= $r->auth->sub;
+        $tglhadir 	= $r->tglhadir;
+        $vzona 	    = $r->vzona;
+		$kategori 	= $r->kategori;
+
+		$get_dtl_undangan 		= M_lapundangan::get_dtl_tidak_hadir($kategori,$vzona);
 		$get_dtl_undangan_array = array();
 		foreach ($get_dtl_undangan as $get_dtl_undangan_row) {
 			$get_dtl_undangan_array[] = $get_dtl_undangan_row;
