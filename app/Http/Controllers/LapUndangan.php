@@ -173,7 +173,6 @@ class LapUndangan extends Controller
 			$b = (array)$b;
 			
 			$tempMelebihi2 = (array)clone (object)$tempMelebihi;
-			Log::info('zona Kode Warna: '.$r2->vzona);
 
             $r2->vzona = $b["KODE_WARNA"];
 
@@ -207,7 +206,6 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-		Log::info('dtl Kode Warna: '.$vzona);
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_melebihi($kategori,$vzona);
 		
 		$get_dtl_undangan_array = array();
@@ -233,7 +231,6 @@ class LapUndangan extends Controller
 			$b = (array)$b;
 			$temptambahan2 = (array)clone (object)$temptambahan;
 			
-			Log::info('zona Kode Warna: '.$r2->vzona);
             $r2->vzona = $b["KODE_WARNA"];
 			
 			$b["DETAIL"] = $this->get_dtl_tambahan($r2)["DETAIL"];			
@@ -267,7 +264,6 @@ class LapUndangan extends Controller
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
 
-		Log::info('dtl Kode Warna: '.$vzona);
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_tambahan($kategori,$vzona);
 		$get_dtl_undangan_array = array();
 		foreach ($get_dtl_undangan as $get_dtl_undangan_row) {

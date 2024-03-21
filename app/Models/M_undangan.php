@@ -18,7 +18,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') AS ZONA"), 
 			DB::RAW("ISNULL(A.SEAT,0) AS JML_UNDANGAN_AWAL"), 
 			DB::RAW("ISNULL(A.JUMLAH,0) AS JML_UNDANGAN_UPDATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'N') AS HADIR"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'-') AS HADIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_RAPID)),'Y') AS FLAG_RAPID"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_1)),'') AS KTP_1"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_2)),'') AS KTP_2"),
@@ -37,7 +37,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_OPT1)),'-') AS FLAG_PRINT"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS CELENGAN"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
 			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
 						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
 		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
@@ -67,7 +67,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') AS ZONA"), 
 			DB::RAW("ISNULL(A.SEAT,0) AS JML_UNDANGAN_AWAL"), 
 			DB::RAW("ISNULL(A.JUMLAH,0) AS JML_UNDANGAN_UPDATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'N') AS HADIR"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'-') AS HADIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_RAPID)),'Y') AS FLAG_RAPID"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_1)),'') AS KTP_1"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_2)),'') AS KTP_2"),
@@ -86,7 +86,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_OPT1)),'-') AS FLAG_PRINT"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS CELENGAN"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
 			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
 						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
 		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
@@ -122,7 +122,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') AS ZONA"), 
 			DB::RAW("ISNULL(A.SEAT,0) AS JML_UNDANGAN_AWAL"), 
 			DB::RAW("ISNULL(A.JUMLAH,0) AS JML_UNDANGAN_UPDATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'N') AS HADIR"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'-') AS HADIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_RAPID)),'Y') AS FLAG_RAPID"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_1)),'') AS KTP_1"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_2)),'') AS KTP_2"),
@@ -140,7 +140,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS CELENGAN"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
 			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
 						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
 		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
@@ -166,7 +166,7 @@ class M_undangan extends Model
 	}
 
 	//public static function submit($vuser,$kategori,$nourut,$noreg,$vege,$hadir,$tgl,$jml = null)
-	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao,$souvenir, $celengan)
+	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao,$souvenir, $ketopt1)
 	{
 		$data = [
 			// 'JUMLAH'		=> $jml,
@@ -181,7 +181,7 @@ class M_undangan extends Model
 			'TGL_UPDATE'	=> $tgl,
 			'FLAG_ANGPAO'	=> $flgangpao,	
 			'TAMBAH_GOODIEBAG'	=> $souvenir,	
-			'KET_OPT1'	=> $celengan	
+			'KET_OPT1'	=> $ketopt1	
 		];
 		//if ($jml != null) $data['JUMLAH'] = $jml;
 
@@ -247,7 +247,7 @@ class M_undangan extends Model
         return $q;
     }
 
-    public static function saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan,$lokasi_parkir, $email, $hp, $perusahaan, $souvenir)
+    public static function saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan,$lokasi_parkir, $email, $hp, $perusahaan, $souvenir, $ketopt1)
     {    
         $sql = "EXEC SQII_INPUT_UNDANGAN_TAMBAHAN ";
         $sql.= "'".$vuser."',";
@@ -260,7 +260,8 @@ class M_undangan extends Model
         $sql.= "'".$email."',";
         $sql.= "'".$hp."',";
         $sql.= "'".$perusahaan."',";
-        $sql.= "'".$souvenir."'";
+        $sql.= "'".$souvenir."',";
+        $sql.= "'".$ketopt1."'";
 		
         $q = DB::connection('UNDANGAN')
         ->select($sql); 
@@ -281,6 +282,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FN_ANGPAO)),'N') AS FN_ANGPAO"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FN_VEGETARIAN)),'N') AS FN_VEGETARIAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FN_PRINT_MEJA)),'N') AS FN_PRINT_MEJA"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(A.FN_CELENGAN)),'N') AS FN_CELENGAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FN_JML_HADIR)),'N') AS FN_JML_HADIR")
 		)
 		->where('A.FLAG_AKTIF', '=', 'A')

@@ -360,7 +360,7 @@ class M_lapundangan extends Model
                 TOTAL = 
                 (
                     SELECT
-                        SUM_HADIR = ISNULL(COUNT(XA.NO_REGISTER),0)
+                        SUM_HADIR = ISNULL(SUM(XA.SEAT),0)
                     FROM REGISTER_TAMU XA
                     WHERE 1=1			
 
@@ -399,7 +399,7 @@ class M_lapundangan extends Model
                 SELECT
                     ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') KODE_WARNA,
                     ISNULL(LTRIM(RTRIM(A.NAMA)),'-') AS NAMA,
-                    ISNULL(A.JUMLAH,0) AS JML_UNDANGAN,
+                    ISNULL(A.SEAT,0) AS JML_UNDANGAN,
                     CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
                 FROM REGISTER_TAMU AS A
                 WHERE 1=1
@@ -466,14 +466,12 @@ class M_lapundangan extends Model
 		WHERE HADIR = 'Y' and kategori= '".$kategori."'
         AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
-			
 		) ----TOTAL HADIR 	
 		UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JUMLAH),0) AS PAX
 		FROM Register_Tamu B
 		WHERE HADIR = 'Y' and kategori= '".$kategori."'
 		AND ( ISNULL(JML_KONFIRMASI_HADIR,0) >= 0) AND USER_ENTRY IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
-			
 		) ----TOTAL TAMBAHAN 
 			UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JML_KONFIRMASI_HADIR),0) AS PAX
@@ -481,23 +479,23 @@ class M_lapundangan extends Model
 		WHERE ISNULL(HADIR,'') = '' and kategori= '".$kategori."'
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0) ----BELUM HADIR
 			UNION ALL
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JML_KONFIRMASI_HADIR),0) AS PAX
+		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.SEAT),0) AS PAX
 		FROM Register_Tamu B
 		WHERE HADIR = 'N' and kategori= '".$kategori."'
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) = 0)  ----KONFIRM TDK HADIR 
 			UNION ALL 
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
 		FROM Register_Tamu B WHERE 1=1
-	AND KATEGORI = '".$kategori."'
-    AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
-	AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) < 0)
-     --- MELEBIHI JUMLAH PAX
-		UNION ALL 
-		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
-		FROM Register_Tamu B WHERE 1=1
-	AND KATEGORI = '".$kategori."'
-    AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
-	AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) > 0) --- KURANG JUMLAH PAX
+        AND KATEGORI = '".$kategori."'
+        AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+        AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) < 0)
+        --- MELEBIHI JUMLAH PAX
+            UNION ALL 
+            (SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
+            FROM Register_Tamu B WHERE 1=1
+        AND KATEGORI = '".$kategori."'
+        AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+        AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) > 0) --- KURANG JUMLAH PAX
 	    	");
 				
 		return $q;

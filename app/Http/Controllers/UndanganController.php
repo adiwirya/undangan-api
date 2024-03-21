@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\M_undangan;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
-
+use Log;
 class UndanganController extends Controller
 {
   /**
@@ -68,15 +68,12 @@ class UndanganController extends Controller
 		// $fgrapid	= $r->fgrapid;
 		// $ktp1		= $r->ktp1;
 		$souvenir	= $r->souvenir;
-		$celengan	= $r->celengan;
+		$ketopt1	= $r->ketopt1;
 		date_default_timezone_set('Asia/Jakarta');
 		$tgl		= date('Y-m-d H:i:s');
-		
-		// $simpan1 = M_Undangan::submit($vuser,$kategori,1,$noreg,$vege1,$hadir1,$tgl,$jml);
-		// $simpan2 = M_Undangan::submit($vuser,$kategori,2,$noreg,$vege2,$hadir2,$tgl);
-		
+
 		// return response()->json([$simpan1, $simpan2]);
-		$simpan = M_Undangan::submit($vuser,$kategori,$noreg,$vege,$jml,$tgl, $flgangpao, $souvenir, $celengan);
+		$simpan = M_Undangan::submit($vuser,$kategori,$noreg,$vege,$jml,$tgl, $flgangpao, $souvenir, $ketopt1);
 		return response()->json($simpan);
 	}
 	
@@ -119,6 +116,7 @@ class UndanganController extends Controller
 
 	public function saveUndanganTambahan(Request $r)
 	{	
+		Log::info('Log data: '.$r);
 		$vuser 			= $r->auth->sub;
 		$periode 	 	= $r->periode;
 		$kategori	 	= $r->kategori;
@@ -130,10 +128,11 @@ class UndanganController extends Controller
 		$hp         	= $r->hp;
 		$perusahaan 	= $r->perusahaan;
 		$souvenir 	    = $r->souvenir;
+		$ketopt1 	    = $r->ketopt1;
 		
 		
 
-		$saveUndanganTambahan = M_undangan::saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan, $lokasi_parkir, $email, $hp, $perusahaan, $souvenir);
+		$saveUndanganTambahan = M_undangan::saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan, $lokasi_parkir, $email, $hp, $perusahaan, $souvenir, $ketopt1);
 		
 		return response()->json($saveUndanganTambahan);
 	}
