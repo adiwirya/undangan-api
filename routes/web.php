@@ -20,6 +20,12 @@ $router->get('/key', function(){
     return str_random(32);
 });
 
+
+$router->group(['prefix' => '/user'], function () use ($router) {
+    $router->post('create',  ['uses' => 'UserController@createUser']);
+    $router->post('changePassword',  ['uses' => 'UserController@changePassword']);
+});
+
 $router->group(['prefix' => '/undangan'], function () use ($router) {
     $router->post('login',['uses' => 'AuthController@authenticate']);
 
