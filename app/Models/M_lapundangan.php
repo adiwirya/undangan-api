@@ -70,7 +70,6 @@ class M_lapundangan extends Model
                     AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
                  --   AND CONVERT(VARCHAR(10),A.JAM_DATANG,126)	 = '".$tglhadir."' 
                     AND LTRIM(RTRIM(A.HADIR))					 = 'Y'
-                    AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
 					AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
             ) V_HADIR
             WHERE 1=1
