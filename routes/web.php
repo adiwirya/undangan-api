@@ -24,6 +24,8 @@ $router->get('/key', function(){
 $router->group(['prefix' => '/user'], function () use ($router) {
     $router->post('create',  ['uses' => 'UserController@createUser']);
     $router->post('changePassword',  ['uses' => 'UserController@changePassword']);
+    $router->post('setPass',  ['uses' => 'UserController@setPassword']);
+    $router->get('getVersion',  ['uses' => 'UserController@getVersionAPK']);
 });
 
 $router->group(['prefix' => '/undangan'], function () use ($router) {
