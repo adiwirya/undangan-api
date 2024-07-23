@@ -32,6 +32,20 @@ class UndanganController extends Controller
 		return response()->json($getDisplayUndangan);
 	}
 
+	public function getBarcodeNama(Request $r)
+	{	
+		$vuser 		= $r->auth->sub;
+		//$no_barcode = $r->no_barcode;
+		$kategori 	= $r->kategori;
+		$nama 		= $r->nama;
+
+		$getBarcodeNama 	= M_undangan::getBarcodeNama($kategori, $nama);
+		// $data = array(
+		// 	'results' => $getBarcodeNama);
+		// echo json_encode($data);
+		return response()->json($getBarcodeNama);
+	}
+
 	public function getDataUndangan(Request $r)
 	{	
 		$vuser = $r->auth->sub;

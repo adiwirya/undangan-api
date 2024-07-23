@@ -34,6 +34,7 @@ $router->group(['prefix' => '/undangan'], function () use ($router) {
     $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
         
         $router->get('getBarcode',  ['uses' => 'UndanganController@getDisplayUndangan']);
+        $router->get('getBarcodeNama',  ['uses' => 'UndanganController@getBarcodeNama']);
         $router->get('searchDataUndangan',  ['uses' => 'UndanganController@getDataUndangan']);
         $router->get('dataTitipan',  ['uses' => 'UndanganController@getTitipan']);
         $router->post('submitUndangan',  ['uses' => 'UndanganController@simpanData']);
