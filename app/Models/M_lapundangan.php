@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class M_lapundangan extends Model
 {	
-    public static function get_zona_hadir($tglhadir,$kategori)
+    public static function get_zona_hadir($tglhadir,$kategori,$periode)
 	{  
 		$q = DB::select("
 			SELECT
@@ -20,6 +20,7 @@ class M_lapundangan extends Model
                     WHERE 1=1			
 
                         AND XA.KATEGORI                              = '".$kategori."'
+                        AND XA.PERIODE                              = '".$periode."'
                         AND ISNULL(LTRIM(RTRIM(XA.NAMA)),'')		!= ''
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                       --  AND CONVERT(VARCHAR(10),XA.JAM_DATANG,126)	 = '".$tglhadir."'
@@ -31,6 +32,7 @@ class M_lapundangan extends Model
             WHERE 1=1
 
                 AND A.KATEGORI                               =  '".$kategori."'
+                AND A.PERIODE                               =  '".$periode."'
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')         != ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')   != ''
                -- AND CONVERT(VARCHAR(10),A.JAM_DATANG,126)    = '".$tglhadir."' 
@@ -45,7 +47,7 @@ class M_lapundangan extends Model
         return $q;
     }
 
-    public static function  get_dtl_hadir($tglhadir,$vzona,$kategori)
+    public static function  get_dtl_hadir($tglhadir,$vzona,$kategori,$periode)
 	{
         $q = DB::select("
             
@@ -65,6 +67,7 @@ class M_lapundangan extends Model
                 WHERE 1=1
                     
                     AND A.KATEGORI                               = '".$kategori."'
+                    AND A.PERIODE                               = '".$periode."'
                     AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')				 = '".$vzona."'
                     AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                     AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
@@ -80,7 +83,7 @@ class M_lapundangan extends Model
         return $q;
     }
 
-    public static function get_zona_blmhadir($tglhadir,$kategori)
+    public static function get_zona_blmhadir($tglhadir,$kategori,$periode)
 	{  
 		$q = DB::select("
 				
@@ -93,6 +96,7 @@ class M_lapundangan extends Model
                     FROM REGISTER_TAMU XA
                     WHERE 1=1			 
                         AND XA.KATEGORI                              = '".$kategori."'           
+                        AND XA.PERIODE                              = '".$periode."'           
                         AND ISNULL(LTRIM(RTRIM(XA.NAMA)),'')		!= ''
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND LTRIM(RTRIM(XA.HADIR)) IS NULL
@@ -102,6 +106,7 @@ class M_lapundangan extends Model
             FROM REGISTER_TAMU A
             WHERE 1=1                  
                 AND A.KATEGORI                              = '".$kategori."'       
+                AND A.PERIODE                              = '".$periode."'       
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
                 AND LTRIM(RTRIM(A.HADIR)) IS NULL
@@ -114,7 +119,7 @@ class M_lapundangan extends Model
         return $q;
     }
 
-    public static function  get_dtl_blmhadir($tglhadir,$vzona,$kategori)
+    public static function  get_dtl_blmhadir($tglhadir,$vzona,$kategori,$periode)
 	{
 		$q = DB::select("
 			SELECT 
@@ -125,6 +130,7 @@ class M_lapundangan extends Model
 			FROM REGISTER_TAMU AS A
 			WHERE 1=1
 				AND A.KATEGORI                              = '".$kategori."'              
+				AND A.PERIODE                              = '".$periode."'              
 				AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')              = '".$vzona."'
 				AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
 				AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
@@ -137,7 +143,7 @@ class M_lapundangan extends Model
 		return $q;
     }
 
-    public static function  get_rekap_undangan($tglhadir,$kategori)
+    public static function  get_rekap_undangan($tglhadir,$kategori,$periode)
 	{    
         $q = DB::select("
 			SELECT	
@@ -149,6 +155,7 @@ class M_lapundangan extends Model
                     WHERE 1=1
                      
                         AND B.KATEGORI                              = '".$kategori."'
+                        AND B.PERIODE                              = '".$periode."'
                         AND ISNULL(LTRIM(RTRIM(B.KODE_WARNA)),'-')				= ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                         AND LTRIM(RTRIM(B.HADIR))					= 'Y'
                         AND ISNULL(LTRIM(RTRIM(B.NAMA)),'')			!= ''
@@ -162,6 +169,7 @@ class M_lapundangan extends Model
                     WHERE 1=1
                       
                         AND C.KATEGORI                               = '".$kategori."'
+                        AND C.PERIODE                               = '".$periode."'
                         AND ISNULL(LTRIM(RTRIM(C.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                         AND ISNULL(C.JUMLAH,0)						 = 0
                         AND LTRIM(RTRIM(C.HADIR))					IS NULL
@@ -171,8 +179,9 @@ class M_lapundangan extends Model
                 ) 
             FROM REGISTER_TAMU A
             WHERE 1=1
-                
+            
                 AND A.KATEGORI                              = '".$kategori."'
+                AND A.PERIODE                              = '".$periode."'
                 AND LTRIM(RTRIM(A.HADIR))					= 'Y'
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
@@ -186,7 +195,7 @@ class M_lapundangan extends Model
         return $q;
     }
 
-    public static function get_zona_melebihi($kategori){
+    public static function get_zona_melebihi($kategori,$periode){
          $q = DB::select("
              SELECT
               ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') KODE_WARNA,
@@ -197,6 +206,7 @@ class M_lapundangan extends Model
                     FROM REGISTER_TAMU XA
                     WHERE 1=1			   
                         AND XA.KATEGORI                              = '".$kategori."'             
+                        AND XA.PERIODE                              = '".$periode."'             
                         AND ISNULL(LTRIM(RTRIM(XA.NAMA)),'')		!= ''
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND LTRIM(RTRIM(XA.HADIR))   ='Y'
@@ -206,6 +216,7 @@ class M_lapundangan extends Model
             FROM REGISTER_TAMU A
             WHERE 1=1                    
                 AND A.KATEGORI                              = '".$kategori."'          
+                AND A.PERIODE                              = '".$periode."'          
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
                 AND LTRIM(RTRIM(A.HADIR))   ='Y'
@@ -217,7 +228,7 @@ class M_lapundangan extends Model
          return $q;
     }
 
-	public static function get_dtl_melebihi($kategori,$vzona){
+	public static function get_dtl_melebihi($kategori,$vzona,$periode){
         $q = DB::select("
         SELECT ROW_NUMBER() OVER(PARTITION BY ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') ORDER BY LTRIM(RTRIM(A.NAMA)) ASC ) AS NOMOR,
 				ISNULL(LTRIM(RTRIM(A.NAMA)),'-') AS NAMA,
@@ -225,12 +236,14 @@ class M_lapundangan extends Model
 				CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
             FROM Register_Tamu A
             WHERE KATEGORI = '".$kategori."'   
+            WHERE PERIODE = '".$periode."'   
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND NO_REGISTER IN 
 
             (SELECT B.NO_REGISTER 
 		    FROM Register_Tamu B WHERE 1=1
 	        AND KATEGORI = '".$kategori."'  
+	        AND PERIODE = '".$periode."'  
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
 	        AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) < 0)
             AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
@@ -240,7 +253,7 @@ class M_lapundangan extends Model
 
     }
 
-    public static function get_zona_kurang($kategori){
+    public static function get_zona_kurang($kategori,$periode){
          $q = DB::select("
             SELECT
               ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') KODE_WARNA,
@@ -251,6 +264,7 @@ class M_lapundangan extends Model
                     FROM REGISTER_TAMU XA
                     WHERE 1=1			   
                         AND XA.KATEGORI                              = '".$kategori."'          
+                        AND XA.PERIODE                              = '".$periode."'          
                         AND ISNULL(LTRIM(RTRIM(XA.NAMA)),'')		!= ''
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND LTRIM(RTRIM(XA.HADIR))   ='Y'
@@ -260,6 +274,7 @@ class M_lapundangan extends Model
             FROM REGISTER_TAMU A
             WHERE 1=1                    
                 AND A.KATEGORI                              = '".$kategori."'        
+                AND A.PERIODE                              = '".$periode."'        
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
                 AND LTRIM(RTRIM(A.HADIR))   ='Y'
@@ -272,7 +287,7 @@ class M_lapundangan extends Model
          return $q;
     }
 
-	public static function get_dtl_kurang($kategori,$vzona){
+	public static function get_dtl_kurang($kategori,$vzona,$periode){
         $q = DB::select("
         SELECT ROW_NUMBER() OVER(PARTITION BY ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') ORDER BY LTRIM(RTRIM(A.NAMA)) ASC ) AS NOMOR,
 				ISNULL(LTRIM(RTRIM(A.NAMA)),'-') AS NAMA,
@@ -280,12 +295,14 @@ class M_lapundangan extends Model
 				CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
             FROM Register_Tamu A
             WHERE KATEGORI = '".$kategori."'   
+            WHERE PERIODE = '".$periode."'   
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND NO_REGISTER IN 
 
             (SELECT B.NO_REGISTER 
 		    FROM Register_Tamu B WHERE 1=1
 	        AND KATEGORI = '".$kategori."'   
+	        AND PERIODE = '".$periode."'   
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
 	        AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) > 0)
 			AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
@@ -294,7 +311,7 @@ class M_lapundangan extends Model
          return $q;
 
     }
-    public static function get_zona_tambahan($kategori){
+    public static function get_zona_tambahan($kategori,$periode){
          $q = DB::select("
             SELECT
               ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') KODE_WARNA,
@@ -305,6 +322,7 @@ class M_lapundangan extends Model
                     FROM REGISTER_TAMU XA
                     WHERE 1=1			   
                         AND XA.KATEGORI                              = '".$kategori."'         
+                        AND XA.PERIODE                              = '".$periode."'         
                         AND ISNULL(LTRIM(RTRIM(XA.NAMA)),'')		!= ''
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND LTRIM(RTRIM(XA.HADIR))   ='Y'	
@@ -313,6 +331,7 @@ class M_lapundangan extends Model
             FROM REGISTER_TAMU A
             WHERE 1=1                    
                 AND A.KATEGORI                              = '".$kategori."'       
+                AND A.PERIODE                              = '".$periode."'       
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
@@ -325,7 +344,7 @@ class M_lapundangan extends Model
          return $q;
     }
 
-	public static function get_dtl_tambahan($kategori,$vzona){
+	public static function get_dtl_tambahan($kategori,$vzona,$periode){
         $q = DB::select("
         SELECT ROW_NUMBER() OVER(PARTITION BY ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') ORDER BY LTRIM(RTRIM(A.NAMA)) ASC ) AS NOMOR,
 				ISNULL(LTRIM(RTRIM(A.NAMA)),'-') AS NAMA,
@@ -333,6 +352,7 @@ class M_lapundangan extends Model
 				CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
             FROM Register_Tamu A
             WHERE KATEGORI = '".$kategori."'    
+            WHERE PERIODE = '".$periode."'    
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
             AND NO_REGISTER IN 
@@ -341,6 +361,7 @@ class M_lapundangan extends Model
 			SELECT B.NO_REGISTER 
 		    FROM Register_Tamu B WHERE 1=1
 	        AND KATEGORI = '".$kategori."'   
+	        AND PERIODE = '".$periode."'   
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
 			AND USER_ENTRY IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
@@ -352,7 +373,7 @@ class M_lapundangan extends Model
 
     }
 
-    public static function get_zona_tidak_hadir($kategori){
+    public static function get_zona_tidak_hadir($kategori,$periode){
          $q = DB::select("
             SELECT
                 ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') KODE_WARNA,
@@ -363,7 +384,8 @@ class M_lapundangan extends Model
                     FROM REGISTER_TAMU XA
                     WHERE 1=1			
 
-                        AND XA.KATEGORI                              = 'OPENING2'
+                        AND XA.KATEGORI                              = '".$kategori."'
+                        AND XA.PERIODE                              = '".$periode."'
                         AND ISNULL(LTRIM(RTRIM(XA.NAMA)),'')		!= ''
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND LTRIM(RTRIM(XA.HADIR))					 = 'N'
@@ -374,6 +396,7 @@ class M_lapundangan extends Model
             WHERE 1=1
 
                 AND A.KATEGORI                               =  '".$kategori."' 
+                AND A.PERIODE                               =  '".$periode."' 
                 AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')         != ''
                 AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')   != ''
                 AND LTRIM(RTRIM(A.HADIR))                    = 'N'
@@ -386,7 +409,7 @@ class M_lapundangan extends Model
          return $q;
     }
 
-	public static function get_dtl_tidak_hadir($kategori,$vzona){
+	public static function get_dtl_tidak_hadir($kategori,$vzona,$periode){
         $q = DB::select("
         SELECT 
                 ROW_NUMBER() OVER(PARTITION BY ISNULL(LTRIM(RTRIM(V_HADIR.KODE_WARNA)),'-') ORDER BY LTRIM(RTRIM(V_HADIR.NAMA)) ASC ) AS NOMOR,
@@ -404,6 +427,7 @@ class M_lapundangan extends Model
                 WHERE 1=1
                     
                     AND A.KATEGORI                               = '".$kategori."' 
+                    AND A.PERIODE                               = '".$periode."' 
                     AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')				 = '".$vzona."' 
                     AND ISNULL(LTRIM(RTRIM(A.NAMA)),'')			!= ''
                     AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
@@ -418,81 +442,86 @@ class M_lapundangan extends Model
 
     }
 
-    public static function  get_total_rekap($kategori){
+    public static function  get_total_rekap($kategori,$periode){
 		 $q = DB::select("
                     
         SELECT 'Total Undangan' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
         from REGISTER_TAMU
-        where KATEGORI = '".$kategori."' --TOTAL UNDANGAN
+        where KATEGORI = '".$kategori."' 
+        AND PERIODE = '".$periode."'  --TOTAL UNDANGAN
         UNION ALL
         SELECT 'Total Hadir' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
         FROM REGISTER_TAMU
         WHERE KATEGORI = '".$kategori."' 
+        AND PERIODE = '".$periode."' 
         AND HADIR ='Y' -- HADIR
         AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
         UNION ALL 
         SELECT 'Total Belum Hadir' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
         FROM REGISTER_TAMU
-        WHERE KATEGORI = '".$kategori."'
+        WHERE KATEGORI = '".$kategori."' 
+        AND PERIODE = '".$periode."' 
         AND ISNULL(HADIR,'') = '' --BLM HADIR
         AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
         UNION ALL 
         SELECT 'Total Tambahan' AS NAMA,  COUNT(NO_REGISTER) AS JUMLAH
         FROM REGISTER_TAMU
         WHERE KATEGORI = '".$kategori."'
+        AND PERIODE = '".$periode."' 
         AND HADIR ='Y' -- HADIR
         AND ISNULL(JML_KONFIRMASI_HADIR,0) >= 0
         AND USER_ENTRY IN  (SELECT CAST(ID AS VARCHAR(50)) FROM users) -- TOTAL TAMBAHAN
         UNION ALL
-        Select 'Total Souvenir' AS NAMA, ISNULL(SUM(TAMBAH_GOODIEBAG),0) AS JUMLAH
+        SELECT 'Total Souvenir' AS NAMA, ISNULL(SUM(TAMBAH_GOODIEBAG),0) AS JUMLAH
         from REGISTER_TAMU
-        where KATEGORI = '".$kategori."' --TOTAL SOUVENIR
+        where KATEGORI = '".$kategori."' 
+        AND PERIODE = '".$periode."' --TOTAL SOUVENIR
 
 		 ");
 
         return $q;
 	 }
 
-     public static function getJmlUndangan($kategori)
+     public static function getJmlUndangan($kategori,$periode)
 	{
 		$q = DB::SELECT("
 		(SELECT COUNT(NO_REGISTER) AS JUMLAH, COALESCE(SUM(JML_KONFIRMASI_HADIR),0) PAX
-		FROM Register_Tamu where kategori= '".$kategori."'
+		FROM Register_Tamu where kategori= '".$kategori."' AND PERIODE = '".$periode."'
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0) ----TOTAL UNDANGAN
 			UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JUMLAH),0) AS PAX
 		FROM Register_Tamu B
-		WHERE HADIR = 'Y' and kategori= '".$kategori."'
+		WHERE HADIR = 'Y' and kategori= '".$kategori."' AND PERIODE = '".$periode."'
         AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
 		) ----TOTAL HADIR 	
 		UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JUMLAH),0) AS PAX
 		FROM Register_Tamu B
-		WHERE HADIR = 'Y' and kategori= '".$kategori."'
+		WHERE HADIR = 'Y' and kategori= '".$kategori."' AND PERIODE = '".$periode."'
 		AND ( ISNULL(JML_KONFIRMASI_HADIR,0) >= 0) AND USER_ENTRY IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
 		) ----TOTAL TAMBAHAN 
 			UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JML_KONFIRMASI_HADIR),0) AS PAX
 		FROM Register_Tamu B
-		WHERE ISNULL(HADIR,'') = '' and kategori= '".$kategori."'
+		WHERE ISNULL(HADIR,'') = '' and kategori= '".$kategori."' AND PERIODE = '".$periode."'
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0) ----BELUM HADIR
 			UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.SEAT),0) AS PAX
 		FROM Register_Tamu B
-		WHERE HADIR = 'N' and kategori= '".$kategori."'
+		WHERE HADIR = 'N' and kategori= '".$kategori."' AND PERIODE = '".$periode."'
 		AND ISNULL(JML_KONFIRMASI_HADIR,0) = 0)  ----KONFIRM TDK HADIR 
 			UNION ALL 
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
 		FROM Register_Tamu B WHERE 1=1
-        AND KATEGORI = '".$kategori."'
+        AND KATEGORI = '".$kategori."' AND PERIODE = '".$periode."'
         AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
         AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) < 0)
         --- MELEBIHI JUMLAH PAX
             UNION ALL 
             (SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(ABS(B.JML_KONFIRMASI_HADIR - B.JUMLAH)),0) AS PAX
             FROM Register_Tamu B WHERE 1=1
-        AND KATEGORI = '".$kategori."'
+        AND KATEGORI = '".$kategori."' AND PERIODE = '".$periode."'
         AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
         AND (B.JML_KONFIRMASI_HADIR - B.JUMLAH) > 0) --- KURANG JUMLAH PAX
 	    	");

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class M_undangan extends Model
 {	
-	public static function getDisplayUndangan($kategori,$no_barcode)
+	public static function getDisplayUndangan($kategori,$no_barcode,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
 		->select(
@@ -52,12 +52,13 @@ class M_undangan extends Model
 
 		->where('A.KATEGORI', $kategori)
 		->where('A.NO_REGISTER', $no_barcode)
+		->where('A.PERIODE', $periode)
 		->get();
 				
 		return $q;
 	}
 
-	public static function getBarcodeNama($kategori,$nama)
+	public static function getBarcodeNama($kategori,$nama,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
 		->select(
@@ -101,12 +102,13 @@ class M_undangan extends Model
 
 		->where('A.KATEGORI', $kategori)
 		->where('A.NAMA', $nama)
+		->where('A.PERIODE', $periode)
 		->get();
 				
 		return $q;
 	}
 
-	public static function getDataUndangan($kategori)
+	public static function getDataUndangan($kategori,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
 		->select(
@@ -153,6 +155,7 @@ class M_undangan extends Model
 		//->where('A.KATEGORI', '=', 'GANTARI')
 		// ->where('A.KATEGORI', '=', 'TRUNK')
 		->where('A.KATEGORI', '=', $kategori)
+		->where('A.PERIODE', $periode)
 		// ->where('A.KODE_WARNA', '<>', '')
 		// ->where('A.KATEGORI_UND', '=', 'Summarecon')
 		->orderby('A.NAMA')
@@ -162,7 +165,7 @@ class M_undangan extends Model
 	}
 
 
-	public static function getTitipan($kategori)
+	public static function getTitipan($kategori,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
 		->select(
@@ -207,6 +210,7 @@ class M_undangan extends Model
 		//->where('A.KATEGORI', '=', 'GANTARI')
 		// ->where('A.KATEGORI', '=', 'TRUNK')
 		->where('A.KATEGORI', '=', $kategori)
+		->where('A.PERIODE', $periode)
 		->whereNull('A.HADIR') 
 		// ->where('A.KATEGORI_UND', '=', 'Summarecon')
 		->orderby('A.NAMA')
