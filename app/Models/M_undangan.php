@@ -38,42 +38,15 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("Select 
-					CASE 
-						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
-						-- kita menggunakan nilai default '-'.
-						WHEN COALESCE(KODE_WARNA_OPTION, KODE_WARNA_OPTION2, KODE_WARNA_OPTION3, KODE_WARNA_OPTION4, KODE_WARNA_OPTION5) IS NULL THEN
-							'-'
+			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
+						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
+		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
 						ELSE
-							-- Jika ada setidaknya satu nilai yang tidak kosong, kita akan melakukan
-							-- penggabungan dengan pemisah '-' seperti biasa.
-							ISNULL(RTRIM(KODE_WARNA_OPTION),'') + 
-							CASE 
-								WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN
-									' - ' + RTRIM(KODE_WARNA_OPTION2)
-								ELSE 
-									''
-							END +
-							CASE 
-								WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
-									' - ' + RTRIM(KODE_WARNA_OPTION3)
-								ELSE 
-									''
-							END +
-							CASE 
-								WHEN KODE_WARNA_OPTION4 IS NOT NULL THEN
-									' - ' + RTRIM(KODE_WARNA_OPTION4)
-								ELSE 
-									''
-							END +
-							CASE 
-								WHEN KODE_WARNA_OPTION5 IS NOT NULL THEN
-									' - ' + RTRIM(KODE_WARNA_OPTION5)
-								ELSE 
-									''
-							END
-					END AS KODE_WARNA_CONCAT
-				")
+							CASE WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
+								+ ' - ' + RTRIM(KODE_WARNA_OPTION3)
+							ELSE ''
+							END 
+						END KODE_WARNA_CONCAT")
 		)
 		
 
