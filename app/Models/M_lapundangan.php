@@ -528,5 +528,81 @@ class M_lapundangan extends Model
 				
 		return $q;
 	}
+
+    public static function getListZona($kategori, $periode)
+	{
+		$q = DB::SELECT("
+		        SELECT ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-') AS ZONA, 
+				ISNULL(COUNT(NO_REGISTER),0) AS JUMLAH, 
+				ISNULL(SUM(SEAT),0) AS KURSI
+				FROM REGISTER_TAMU
+				WHERE KATEGORI = '".$kategori."'
+				AND PERIODE = '".$periode."'
+				GROUP BY KODE_WARNA
+	    	");
+				
+		return $q;
+	}
+    
+    public static function getBaris($kategori, $periode , $zona)
+	{
+		$q = DB::SELECT("
+                SELECT ISNULL(LTRIM(RTRIM(KODE_WARNA_OPTION)),'-') AS BARIS, 
+                ISNULL(COUNT(NO_REGISTER),0) AS JUMLAH
+				FROM REGISTER_TAMU
+				WHERE KATEGORI = '".$kategori."'
+				AND PERIODE = '".$periode."'
+				AND KODE_WARNA = '".$zona."'
+				GROUP BY KODE_WARNA_OPTION
+	    	");
+				
+		return $q;
+	}
+
+     public static function getHadir($kategori, $periode , $zona)
+	{
+		$q = DB::SELECT("
+                SELECT ISNULL(COUNT(NO_REGISTER),0) AS JUMLAH
+				FROM REGISTER_TAMU
+				WHERE KATEGORI = '".$kategori."'
+				AND PERIODE = '".$periode."'
+				AND KODE_WARNA = '".$zona."'
+                AND HADIR ='Y'
+	    	");
+				
+		return $q;
+	}
+
+     public static function getTotal($kategori, $periode , $zona)
+	{
+		$q = DB::SELECT("
+                SELECT ISNULL(COUNT(NO_REGISTER),0) AS JUMLAH
+				FROM REGISTER_TAMU
+				WHERE KATEGORI = '".$kategori."'
+				AND PERIODE = '".$periode."'
+				AND KODE_WARNA = '".$zona."'
+	    	");
+				
+		return $q;
+	}
+
+    public static function getDtlBaris($kategori, $periode , $zona, $baris)
+	{
+		$q = DB::SELECT("
+                SELECT
+                ISNULL(LTRIM(RTRIM(NAMA)),'-') NAMA,
+                ISNULL(JML_KONFIRMASI_HADIR,0) AS UNDANGAN,
+                ISNULL(JUMLAH,0) AS HADIR,  CONVERT(VARCHAR(5), 
+                ISNULL(JAM_DATANG,'00:00'), 108) JAM_HADIR
+                FROM REGISTER_TAMU
+                WHERE KATEGORI = '".$kategori."'
+				AND PERIODE = '".$periode."'
+				AND KODE_WARNA = '".$zona."'
+                AND KODE_WARNA_OPTION = '".$baris."'
+                ORDER BY JUMLAH, NAMA
+	    	");
+				
+		return $q;
+	}
     
 }

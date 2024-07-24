@@ -166,6 +166,21 @@ class UndanganController extends Controller
 		return response()->json($getListKategori);
 	}
 	
+		public function getListZona(Request $r)
+	{	
+		$vuser = $r->auth->sub;
+
+		$getListZona = M_undangan::getListZona();
+		
+		return response()->json($getListZona);
+	}
 	
-	
+		public function getListZonaDtl(Request $r)
+	{	
+		$vuser = $r->auth->sub;
+
+		$getListZonaDtl = M_undangan::getListZonaDtl();
+		
+		return response()->json($getListZonaDtl);
+	}
 }

@@ -80,9 +80,9 @@ return [
 
         'UNDANGAN' => [
             'driver'    => 'sqlsrv',
-            'host'      => '172.16.0.11',
+            // 'host'      => '172.16.0.11',
             // 'host'      => '10.11.14.215',
-			// 'host'      => '.',
+			'host'      => '.',
             'port'      => '',
             'database'  => 'Register_Tamu',
             'username'  => 'sa',

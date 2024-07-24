@@ -42,6 +42,8 @@ $router->group(['prefix' => '/undangan'], function () use ($router) {
 	    $router->post('cetakTitipan',  ['uses' => 'UndanganController@updateTitipan']);
         $router->post('submitUndanganTambahan',  ['uses' => 'UndanganController@saveUndanganTambahan']);
         $router->get('getKategori',  ['uses' => 'UndanganController@getListKategori']);  
+        $router->get('getListZona',  ['uses' => 'UndanganController@getListZona']);  
+        $router->get('getListZonaDtl',  ['uses' => 'UndanganController@getListZonaDtl']);  
         
         $router->get('getDaftarHadir', ['uses' => 'LapUndangan@get_daftar_hadir']);
         $router->get('getDaftarBelum', ['uses' => 'LapUndangan@get_daftar_belum']);
@@ -52,10 +54,11 @@ $router->group(['prefix' => '/undangan'], function () use ($router) {
         $router->get('getRekapUndangan', ['uses' => 'LapUndangan@get_rekap_undangan']);
         $router->get('getTotalRekap', ['uses' => 'LapUndangan@get_total_rekap']);
 		$router->get('getJmlUndangan',  ['uses' => 'LapUndangan@getJmlUndangan']); 
+		$router->get('getZona',  ['uses' => 'LapUndangan@getListZona']);  
+		$router->get('getRekapZona',  ['uses' => 'LapUndangan@getRekapZona']);  
 
 
         $router->get('getParkir',  ['uses' => 'UndanganController@getParkir']);
-		$router->get('getZona',  ['uses' => 'UndanganController@getListZona']);  
 		
 
     });

@@ -419,6 +419,79 @@ class LapUndangan extends Controller
 
 	}
 
+	public function getListZona(Request $r)
+	{	
+		$vuser = $r->auth->sub;
+		$periode 	 	= $r->periode;
+		$kategori	 	= $r->kategori;
+
+		$getListZona 	= M_lapundangan::getListZona($kategori, $periode);
+		
+		return response()->json($getListZona);
+	}
+
+	public function getRekapZona(Request $r)
+	{	
+		$debug 			= [];
+		$tmpObjb 		= $this->getBaris($r);
+
+		$r2 = clone $r;
+
+		foreach($tmpObjb["DATA_BARIS"] as &$b) {
+			$b = (array)$b;
+            $r2->baris = $b["BARIS"];
+			$b["DETAIL"] = $this->getDtlBaris($r2)["DETAIL"];			
+		}
+
+		return response()->json($tmpObjb)->setEncodingOptions(JSON_NUMERIC_CHECK);
+	}
+
+	public function getBaris(Request $r) 
+	{
+		$vuser = $r->auth->sub;
+		$periode 	 	= $r->periode;
+		$kategori	 	= $r->kategori;
+		$zona	 	= $r->zona;
+
+		$getBaris 	= M_lapundangan::getBaris($kategori, $periode, $zona);
+		$getHadir 	= M_lapundangan::getHadir($kategori, $periode, $zona);
+		$getTotal 	= M_lapundangan::getTotal($kategori, $periode, $zona);
+		$getBarisArray    = array();
+		foreach ($getBaris as $getBarisRow) {
+			$getBarisArray[] = $getBarisRow;
+		}
+
+		$result = array(
+			'DATA_BARIS' => $getBarisArray,
+			'HADIR' => $getHadir[0]->JUMLAH,
+			'TOTAL' => $getTotal[0]->JUMLAH,
+			'BELUM' => $getTotal[0]->JUMLAH - $getHadir[0]->JUMLAH,
+		);
+
+		return $result;
+	}
+
+	public function getDtlBaris(Request $r) 
+	{
+		$vuser = $r->auth->sub;
+		$periode 	 	= $r->periode;
+		$kategori	 	= $r->kategori;
+		$zona	 	= $r->zona;
+		$baris	 	= $r->baris;
+
+		$getDtlBaris 	= M_lapundangan::getDtlBaris($kategori, $periode, $zona, $baris);
+		
+		$getDtlBarisArray    = array();
+		foreach ($getDtlBaris as $getDtlBarisRow) {
+			$getDtlBarisArray[] = $getDtlBarisRow;
+		}
+
+		$result = array(
+			'DETAIL' => $getDtlBarisArray
+		);
+
+		return $result;
+	}
 	 
 
 }

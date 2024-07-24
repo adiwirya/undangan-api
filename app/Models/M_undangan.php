@@ -349,6 +349,28 @@ class M_undangan extends Model
 		return $q;
 	}
 	
-
+		
+	public static function getListZona()
+	{
+		$q = DB::table('TBL_ZONA')
+		->select(
+			DB::RAW("ISNULL(LTRIM(RTRIM(ZONA)),'-') AS ZONA")
+		)
+		->where('FLAG_AKTIF', '=', 'A')
+		->get();
+				
+		return $q;
+	}
 	
+	public static function getListZonaDtl()
+	{
+		$q = DB::table('TBL_ZONA_DTL')
+		->select(
+			DB::RAW("ISNULL(LTRIM(RTRIM(ZONA_OPTION)),'-') AS ZONA")
+		)
+		->where('FLAG_AKTIF', '=', 'A')
+		->get();
+				
+		return $q;
+	}
 }
