@@ -24,7 +24,7 @@ class LapUndangan extends Controller
 		$vuser = $r->auth->sub;
 
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$getJmlUndangan 	= M_lapundangan::getJmlUndangan($kategori,$periode);
 		
@@ -36,7 +36,7 @@ class LapUndangan extends Controller
 		$vuser 	    = $r->auth->sub;
         $tglhadir 	= $r->tglhadir;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_zona_hadir 	    = M_lapundangan::get_zona_hadir($tglhadir,$kategori,$periode);
 		$get_zona_hadir_array   = array();
@@ -57,7 +57,7 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
         $kategori   = $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_dtl_hadir 		    = M_lapundangan::get_dtl_hadir($tglhadir,$vzona,$kategori,$periode);
 		$get_dtl_hadir_array    = array();
@@ -77,7 +77,7 @@ class LapUndangan extends Controller
 		$vuser 	    = $r->auth->sub;
         $tglhadir 	= $r->tglhadir;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 
 		$get_zona_blmhadir 	        = M_lapundangan::get_zona_blmhadir($tglhadir,$kategori,$periode);
@@ -99,7 +99,7 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_blmhadir($tglhadir,$vzona,$kategori,$periode);
 		$get_dtl_undangan_array = array();
@@ -160,7 +160,7 @@ class LapUndangan extends Controller
         $vuser 		= $r->auth->sub;
         $tglhadir 	= $r->tglhadir;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_rekap_undangan         = M_lapundangan::get_rekap_undangan($tglhadir,$kategori,$periode);
 
@@ -192,7 +192,7 @@ class LapUndangan extends Controller
 	public function get_zona_melebihi(Request $r){
 		$vuser 	    = $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 
 		$get_zona_melebihi         = M_lapundangan::get_zona_melebihi($kategori,$periode);
@@ -213,7 +213,7 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 		
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_melebihi($kategori,$vzona,$periode);
 		
@@ -252,7 +252,7 @@ class LapUndangan extends Controller
 	public function get_zona_tambahan(Request $r){
 		$vuser 	    = $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_zona_tambahan         = M_lapundangan::get_zona_tambahan($kategori,$periode);
 		$get_zona_tambahan_array    = array();
@@ -272,7 +272,7 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_tambahan($kategori,$vzona,$periode);
 		$get_dtl_undangan_array = array();
@@ -311,7 +311,7 @@ class LapUndangan extends Controller
 	public function get_zona_kurang(Request $r){
 		$vuser 	    = $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 
 		$get_zona_kurang         = M_lapundangan::get_zona_kurang($kategori,$periode);
@@ -332,7 +332,7 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_kurang($kategori,$vzona,$periode);
 		$get_dtl_undangan_array = array();
@@ -371,7 +371,7 @@ class LapUndangan extends Controller
 	public function get_zona_tidak_hadir(Request $r){
 		$vuser 	    = $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_zona_tidak_hadir         = M_lapundangan::get_zona_tidak_hadir($kategori,$periode);
 		$get_zona_tidak_hadir_array    = array();
@@ -391,7 +391,7 @@ class LapUndangan extends Controller
         $tglhadir 	= $r->tglhadir;
         $vzona 	    = $r->vzona;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$get_dtl_undangan 		= M_lapundangan::get_dtl_tidak_hadir($kategori,$vzona,$periode);
 		$get_dtl_undangan_array = array();
@@ -411,7 +411,7 @@ class LapUndangan extends Controller
 	{
 		$vuser 		= $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 		
 		$get_total_rekap         = M_lapundangan::get_total_rekap($kategori,$periode);
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class M_undangan extends Model
 {	
+	// public static function getDisplayUndangan($kategori,$no_barcode)
 	public static function getDisplayUndangan($kategori,$no_barcode,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
@@ -51,8 +52,8 @@ class M_undangan extends Model
 		
 
 		->where('A.KATEGORI', $kategori)
-		->where('A.NO_REGISTER', $no_barcode)
 		->where('A.PERIODE', $periode)
+		->where('A.NO_REGISTER', $no_barcode)
 		->get();
 				
 		return $q;
@@ -155,7 +156,7 @@ class M_undangan extends Model
 		//->where('A.KATEGORI', '=', 'GANTARI')
 		// ->where('A.KATEGORI', '=', 'TRUNK')
 		->where('A.KATEGORI', '=', $kategori)
-		->where('A.PERIODE', $periode)
+		->where('A.PERIODE','=', $periode)
 		// ->where('A.KODE_WARNA', '<>', '')
 		// ->where('A.KATEGORI_UND', '=', 'Summarecon')
 		->orderby('A.NAMA')

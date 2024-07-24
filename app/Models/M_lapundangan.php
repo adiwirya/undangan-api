@@ -236,7 +236,7 @@ class M_lapundangan extends Model
 				CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
             FROM Register_Tamu A
             WHERE KATEGORI = '".$kategori."'   
-            WHERE PERIODE = '".$periode."'   
+            AND PERIODE = '".$periode."'   
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND NO_REGISTER IN 
 
@@ -295,7 +295,7 @@ class M_lapundangan extends Model
 				CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
             FROM Register_Tamu A
             WHERE KATEGORI = '".$kategori."'   
-            WHERE PERIODE = '".$periode."'   
+            AND PERIODE = '".$periode."'   
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND NO_REGISTER IN 
 
@@ -352,7 +352,7 @@ class M_lapundangan extends Model
 				CONVERT(VARCHAR(5), ISNULL(A.JAM_DATANG,'00:00'), 108) JAM_HADIR
             FROM Register_Tamu A
             WHERE KATEGORI = '".$kategori."'    
-            WHERE PERIODE = '".$periode."'    
+            AND PERIODE = '".$periode."'    
             AND ISNULL(LTRIM(RTRIM(KODE_WARNA)),'-')	= '".$vzona."'
             AND ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')	!= ''
             AND NO_REGISTER IN 

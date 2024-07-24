@@ -24,8 +24,10 @@ class UndanganController extends Controller
 		//$no_barcode = $r->no_barcode;
 		$kategori 	= $r->kategori;
 		$noreg 		= $r->noreg;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
+		
 
+		// $getDisplayUndangan 	= M_undangan::getDisplayUndangan($kategori, $noreg);
 		$getDisplayUndangan 	= M_undangan::getDisplayUndangan($kategori, $noreg, $periode);
 		// $data = array(
 		// 	'results' => $getDisplayUndangan);
@@ -39,7 +41,7 @@ class UndanganController extends Controller
 		//$no_barcode = $r->no_barcode;
 		$kategori 	= $r->kategori;
 		$nama 		= $r->nama;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$getBarcodeNama 	= M_undangan::getBarcodeNama($kategori, $nama, $periode);
 		// $data = array(
@@ -52,7 +54,7 @@ class UndanganController extends Controller
 	{	
 		$vuser = $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$getDataUndangan 	= M_undangan::getDataUndangan($kategori, $periode);
 		
@@ -63,7 +65,7 @@ class UndanganController extends Controller
 	{	
 		$vuser = $r->auth->sub;
 		$kategori 	= $r->kategori;
-		$periode 	= $r->$periode;
+		$periode 	= $r->periode;
 
 		$getDataTitipan 	= M_undangan::getTitipan($kategori, $periode);
 		
