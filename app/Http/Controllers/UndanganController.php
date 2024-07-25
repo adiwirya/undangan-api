@@ -149,10 +149,9 @@ class UndanganController extends Controller
 		$perusahaan 	= $r->perusahaan;
 		$souvenir 	    = $r->souvenir;
 		$ketopt1 	    = $r->ketopt1;
-		
-		
-
-		$saveUndanganTambahan = M_undangan::saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan, $lokasi_parkir, $email, $hp, $perusahaan, $souvenir, $ketopt1);
+		$zonaDtl 	    = $r->zonaDtl;
+	
+		$saveUndanganTambahan = M_undangan::saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan, $lokasi_parkir, $email, $hp, $perusahaan, $souvenir, $ketopt1, $zonaDtl);
 		
 		return response()->json($saveUndanganTambahan);
 	}

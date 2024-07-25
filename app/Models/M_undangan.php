@@ -302,7 +302,7 @@ class M_undangan extends Model
         return $q;
     }
 
-    public static function saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan,$lokasi_parkir, $email, $hp, $perusahaan, $souvenir, $ketopt1)
+    public static function saveUndanganTambahan($vuser, $periode, $kategori, $zona, $nama, $jml_undangan,$lokasi_parkir, $email, $hp, $perusahaan, $souvenir, $ketopt1, $zonaDtl)
     {    
         $sql = "EXEC SQII_INPUT_UNDANGAN_TAMBAHAN ";
         $sql.= "'".$vuser."',";
@@ -316,7 +316,8 @@ class M_undangan extends Model
         $sql.= "'".$hp."',";
         $sql.= "'".$perusahaan."',";
         $sql.= "'".$souvenir."',";
-        $sql.= "'".$ketopt1."'";
+        $sql.= "'".$ketopt1."',";
+        $sql.= "'".$zonaDtl."'";
 		
         $q = DB::connection('UNDANGAN')
         ->select($sql); 
@@ -368,7 +369,7 @@ class M_undangan extends Model
 		->select(
 			DB::RAW("ISNULL(LTRIM(RTRIM(ZONA_OPTION)),'-') AS ZONA")
 		)
-		->where('FLAG_AKTIF', '=', 'A')
+		->where('FLAG_AKTIF', '=', 'A')	
 		->get();
 				
 		return $q;
