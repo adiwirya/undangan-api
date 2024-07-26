@@ -27,6 +27,7 @@ class M_lapundangan extends Model
                         AND LTRIM(RTRIM(XA.HADIR))					 = 'Y'
                         AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
 						AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+                        AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1
@@ -102,6 +103,7 @@ class M_lapundangan extends Model
                         AND LTRIM(RTRIM(XA.HADIR)) IS NULL
                         AND ISNULL(XA.JUMLAH,0)						 = 0
                         AND ISNULL(JML_KONFIRMASI_HADIR,0) > 0
+                        AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1                  
@@ -212,6 +214,7 @@ class M_lapundangan extends Model
                         AND LTRIM(RTRIM(XA.HADIR))   ='Y'
                         AND (XA.JML_KONFIRMASI_HADIR - XA.JUMLAH) < 0	
 						AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+                        AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1                    
@@ -270,6 +273,7 @@ class M_lapundangan extends Model
                         AND LTRIM(RTRIM(XA.HADIR))   ='Y'
                         AND (XA.JML_KONFIRMASI_HADIR - XA.JUMLAH) > 0	
 						AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+                        AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1                    
@@ -327,6 +331,7 @@ class M_lapundangan extends Model
                         AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-')	!= ''
                         AND LTRIM(RTRIM(XA.HADIR))   ='Y'	
 						AND USER_ENTRY IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+                        AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1                    
@@ -391,6 +396,7 @@ class M_lapundangan extends Model
                         AND LTRIM(RTRIM(XA.HADIR))					 = 'N'
                         AND ISNULL(JML_KONFIRMASI_HADIR,0) = 0
 						AND USER_ENTRY NOT IN (SELECT CAST(ID AS VARCHAR(50)) FROM users)
+                        AND ISNULL(LTRIM(RTRIM(XA.KODE_WARNA)),'-') = ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-')
                 )
             FROM REGISTER_TAMU A
             WHERE 1=1
