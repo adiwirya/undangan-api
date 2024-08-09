@@ -39,15 +39,42 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
-						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
-		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
+			DB::RAW("Select 
+					CASE 
+						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
+						-- kita menggunakan nilai default '-'.
+						WHEN COALESCE(KODE_WARNA_OPTION, KODE_WARNA_OPTION2, KODE_WARNA_OPTION3, KODE_WARNA_OPTION4, KODE_WARNA_OPTION5) IS NULL THEN
+							'-'
 						ELSE
-							CASE WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
-								+ ' - ' + RTRIM(KODE_WARNA_OPTION3)
-							ELSE ''
-							END 
-						END KODE_WARNA_CONCAT")
+							-- Jika ada setidaknya satu nilai yang tidak kosong, kita akan melakukan
+							-- penggabungan dengan pemisah '-' seperti biasa.
+							ISNULL(RTRIM(KODE_WARNA_OPTION),'') + 
+							CASE 
+								WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION2)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION3)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION4 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION4)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION5 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION5)
+								ELSE 
+									''
+							END
+					END AS KODE_WARNA_CONCAT
+				")
 		)
 		
 
@@ -89,15 +116,42 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
-						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
-		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
+			DB::RAW("Select 
+					CASE 
+						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
+						-- kita menggunakan nilai default '-'.
+						WHEN COALESCE(KODE_WARNA_OPTION, KODE_WARNA_OPTION2, KODE_WARNA_OPTION3, KODE_WARNA_OPTION4, KODE_WARNA_OPTION5) IS NULL THEN
+							'-'
 						ELSE
-							CASE WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
-								+ ' - ' + RTRIM(KODE_WARNA_OPTION3)
-							ELSE ''
-							END 
-						END KODE_WARNA_CONCAT")
+							-- Jika ada setidaknya satu nilai yang tidak kosong, kita akan melakukan
+							-- penggabungan dengan pemisah '-' seperti biasa.
+							ISNULL(RTRIM(KODE_WARNA_OPTION),'') + 
+							CASE 
+								WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION2)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION3)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION4 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION4)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION5 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION5)
+								ELSE 
+									''
+							END
+					END AS KODE_WARNA_CONCAT
+				")
 		)
 		
 
@@ -111,56 +165,73 @@ class M_undangan extends Model
 
 	public static function getDataUndangan($kategori,$periode)
 	{
-		$q = DB::table('REGISTER_TAMU AS A')
-		->select(
-			DB::RAW("LTRIM(RTRIM(A.NO_REGISTER)) AS NO_BARCODE"), 
-			DB::RAW("ISNULL(LTRIM(RTRIM(UPPER(A.KATEGORI))),'-') AS KATEGORI"), 
-			DB::RAW("ISNULL(LTRIM(RTRIM(UPPER(A.NAMA))),'-') AS NAMA"), 
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') AS ZONA"), 
-			DB::RAW("ISNULL(A.SEAT,0) AS JML_UNDANGAN_AWAL"), 
-			DB::RAW("ISNULL(A.JUMLAH,0) AS JML_UNDANGAN_UPDATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.HADIR)),'-') AS HADIR"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_RAPID)),'Y') AS FLAG_RAPID"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_1)),'') AS KTP_1"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KTP_2)),'') AS KTP_2"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.LOKASI_PARKIR)),'-') AS LOKASI_PARKIR"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KATEGORI_UND)),'-') AS KATEGORI_UND"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.VEGETARIAN)),'-') AS VEGETARIAN"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.NO_URUT)),'-') AS NO_URUT"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.JML_KONFIRMASI_HADIR)),'-') AS JML_KONFIRMASI_HADIR"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.JML_VEGETARIAN)),'0') AS JML_VEGETARIAN"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_ANGPAO)),'-') AS FLAG_ANGPAO"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_TITIP_ANGPAO)),'-') AS FLAG_TITIP_ANGPAO"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.PERUSAHAAN)),'-') AS PERUSAHAAN"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(LEN(A.PERUSAHAAN))),0) AS LEN_PERUSAHAAN"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.NO_KURSI)),'-') AS NO_MEJA"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_OPT1)),'-') AS FLAG_PRINT"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.HP)),'-') AS HP"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
-						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
-		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
-						ELSE
-							CASE WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
-								+ ' - ' + RTRIM(KODE_WARNA_OPTION3)
-							ELSE ''
-							END 
-						END KODE_WARNA_CONCAT")
-		)
-
-		
-		// ->where('A.KATEGORI', '=', 'PAKAIANKOE')
-		//->where('A.KATEGORI', '=', 'GANTARI')
-		// ->where('A.KATEGORI', '=', 'TRUNK')
-		->where('A.KATEGORI', '=', $kategori)
-		->where('A.PERIODE','=', $periode)
-		// ->where('A.KODE_WARNA', '<>', '')
-		// ->where('A.KATEGORI_UND', '=', 'Summarecon')
-		->orderby('A.NAMA')
-		->get();
+		$q = DB::select("
+		SELECT
+		LTRIM(RTRIM(A.NO_REGISTER)) AS NO_BARCODE ,
+		ISNULL(LTRIM(RTRIM(UPPER(A.KATEGORI))),'-') AS KATEGORI ,
+		ISNULL(LTRIM(RTRIM(UPPER(A.NAMA))),'-') AS NAMA ,
+		ISNULL(LTRIM(RTRIM(A.KODE_WARNA)),'-') AS ZONA ,
+		ISNULL(A.SEAT,0) AS JML_UNDANGAN_AWAL ,
+		ISNULL(A.JUMLAH,0) AS JML_UNDANGAN_UPDATE,
+		ISNULL(LTRIM(RTRIM(A.HADIR)),'-') AS HADIR,
+		ISNULL(LTRIM(RTRIM(A.FLAG_RAPID)),'Y') AS FLAG_RAPID,
+		ISNULL(LTRIM(RTRIM(A.KTP_1)),'') AS KTP_1,
+		ISNULL(LTRIM(RTRIM(A.KTP_2)),'') AS KTP_2,
+		ISNULL(LTRIM(RTRIM(A.LOKASI_PARKIR)),'-') AS LOKASI_PARKIR,
+		ISNULL(LTRIM(RTRIM(A.KATEGORI_UND)),'-') AS KATEGORI_UND,
+		ISNULL(LTRIM(RTRIM(A.VEGETARIAN)),'-') AS VEGETARIAN,
+		ISNULL(LTRIM(RTRIM(A.NO_URUT)),'-') AS NO_URUT,
+		ISNULL(LTRIM(RTRIM(A.JML_KONFIRMASI_HADIR)),'-') AS JML_KONFIRMASI_HADIR,
+		ISNULL(LTRIM(RTRIM(A.JML_VEGETARIAN)),'0') AS JML_VEGETARIAN,
+		ISNULL(LTRIM(RTRIM(A.FLAG_ANGPAO)),'-') AS FLAG_ANGPAO,
+		ISNULL(LTRIM(RTRIM(A.FLAG_TITIP_ANGPAO)),'-') AS FLAG_TITIP_ANGPAO,
+		ISNULL(LTRIM(RTRIM(A.PERUSAHAAN)),'-') AS PERUSAHAAN,
+		ISNULL(LTRIM(RTRIM(LEN(A.PERUSAHAAN))),0) AS LEN_PERUSAHAAN,
+		ISNULL(LTRIM(RTRIM(A.NO_KURSI)),'-') AS NO_MEJA,
+		ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM,
+		ISNULL(LTRIM(RTRIM(A.FLAG_OPT1)),'-') AS FLAG_PRINT,
+		ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR,
+		ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE,
+		ISNULL(LTRIM(RTRIM(A.HP)),'-') AS HP,
+		ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1,
+			CASE 
+				-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
+				-- kita menggunakan nilai default '-'.
+				WHEN COALESCE(KODE_WARNA_OPTION, KODE_WARNA_OPTION2, KODE_WARNA_OPTION3, KODE_WARNA_OPTION4, KODE_WARNA_OPTION5) IS NULL THEN
+					'-'
+				ELSE
+					-- Jika ada setidaknya satu nilai yang tidak kosong, kita akan melakukan
+					-- penggabungan dengan pemisah '-' seperti biasa.
+					ISNULL(RTRIM(KODE_WARNA_OPTION),'') + 
+					CASE 
+						WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN
+							' - ' + RTRIM(KODE_WARNA_OPTION2)
+						ELSE 
+							''
+					END +
+					CASE 
+						WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
+							' - ' + RTRIM(KODE_WARNA_OPTION3)
+						ELSE 
+							''
+					END +
+					CASE 
+						WHEN KODE_WARNA_OPTION4 IS NOT NULL THEN
+							' - ' + RTRIM(KODE_WARNA_OPTION4)
+						ELSE 
+							''
+					END +
+					CASE 
+						WHEN KODE_WARNA_OPTION5 IS NOT NULL THEN
+							' - ' + RTRIM(KODE_WARNA_OPTION5)
+						ELSE 
+							''
+					END
+	END AS KODE_WARNA_CONCAT
+	FROM REGISTER_TAMU AS A
+	WHERE A.KATEGORI  = '".$kategori."'
+	AND A.PERIODE   = '".$periode."'
+	ORDER BY A.NAMA");
 				
 		return $q;
 	}
@@ -195,15 +266,42 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("ISNULL(RTRIM(KODE_WARNA_OPTION),'-') + 
-						CASE WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN		
-		 					+ ' - ' + RTRIM(KODE_WARNA_OPTION2)
+			DB::RAW("Select 
+					CASE 
+						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
+						-- kita menggunakan nilai default '-'.
+						WHEN COALESCE(KODE_WARNA_OPTION, KODE_WARNA_OPTION2, KODE_WARNA_OPTION3, KODE_WARNA_OPTION4, KODE_WARNA_OPTION5) IS NULL THEN
+							'-'
 						ELSE
-							CASE WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
-								+ ' - ' + RTRIM(KODE_WARNA_OPTION3)
-							ELSE ''
-							END 
-						END KODE_WARNA_CONCAT")
+							-- Jika ada setidaknya satu nilai yang tidak kosong, kita akan melakukan
+							-- penggabungan dengan pemisah '-' seperti biasa.
+							ISNULL(RTRIM(KODE_WARNA_OPTION),'') + 
+							CASE 
+								WHEN KODE_WARNA_OPTION2 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION2)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION3 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION3)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION4 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION4)
+								ELSE 
+									''
+							END +
+							CASE 
+								WHEN KODE_WARNA_OPTION5 IS NOT NULL THEN
+									' - ' + RTRIM(KODE_WARNA_OPTION5)
+								ELSE 
+									''
+							END
+					END AS KODE_WARNA_CONCAT
+				")
 		)
 
 		
