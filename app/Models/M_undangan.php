@@ -39,7 +39,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("Select 
+			DB::RAW("(Select 
 					CASE 
 						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
 						-- kita menggunakan nilai default '-'.
@@ -73,7 +73,7 @@ class M_undangan extends Model
 								ELSE 
 									''
 							END
-					END AS KODE_WARNA_CONCAT
+					END) AS KODE_WARNA_CONCAT
 				")
 		)
 		
@@ -116,7 +116,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("Select 
+			DB::RAW("(Select 
 					CASE 
 						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
 						-- kita menggunakan nilai default '-'.
@@ -150,7 +150,7 @@ class M_undangan extends Model
 								ELSE 
 									''
 							END
-					END AS KODE_WARNA_CONCAT
+					END) AS KODE_WARNA_CONCAT
 				")
 		)
 		
@@ -194,7 +194,7 @@ class M_undangan extends Model
 		ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE,
 		ISNULL(LTRIM(RTRIM(A.HP)),'-') AS HP,
 		ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1,
-			CASE 
+		(SELECT	CASE 
 				-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
 				-- kita menggunakan nilai default '-'.
 				WHEN COALESCE(KODE_WARNA_OPTION, KODE_WARNA_OPTION2, KODE_WARNA_OPTION3, KODE_WARNA_OPTION4, KODE_WARNA_OPTION5) IS NULL THEN
@@ -227,7 +227,7 @@ class M_undangan extends Model
 						ELSE 
 							''
 					END
-	END AS KODE_WARNA_CONCAT
+	END) AS KODE_WARNA_CONCAT
 	FROM REGISTER_TAMU AS A
 	WHERE A.KATEGORI  = '".$kategori."'
 	AND A.PERIODE   = '".$periode."'
@@ -266,7 +266,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.TAMBAH_GOODIEBAG)),'0') AS SOUVENIR"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.STATUS_TEMPLATE)),'-') AS STATUS_TEMPLATE"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.KET_OPT1)),'-') AS KET_OPT1"),
-			DB::RAW("Select 
+			DB::RAW("(Select 
 					CASE 
 						-- Jika semua KODE_WARNA_OPTION sampai KODE_WARNA_OPTION5 kosong (NULL),
 						-- kita menggunakan nilai default '-'.
@@ -300,7 +300,7 @@ class M_undangan extends Model
 								ELSE 
 									''
 							END
-					END AS KODE_WARNA_CONCAT
+					END) AS KODE_WARNA_CONCAT
 				")
 		)
 
@@ -319,8 +319,9 @@ class M_undangan extends Model
 	}
 
 	//public static function submit($vuser,$kategori,$nourut,$noreg,$vege,$hadir,$tgl,$jml = null)
-	public static function submit($vuser,$kategori,$noreg,$vege,$jml,$tgl,$flgangpao,$souvenir, $ketopt1)
+	public static function submit($vuser,$kategori,$noreg,$vege,$jml =1,$tgl,$flgangpao,$souvenir, $ketopt1)
 	{
+		
 		$data = [
 			// 'JUMLAH'		=> $jml,
 			'HADIR'			=> 'Y',
