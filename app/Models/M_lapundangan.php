@@ -491,8 +491,8 @@ class M_lapundangan extends Model
 	{
 		$q = DB::SELECT("
 		(SELECT COUNT(NO_REGISTER) AS JUMLAH, COALESCE(SUM(JML_KONFIRMASI_HADIR),0) PAX
-		FROM Register_Tamu where kategori= '".$kategori."' AND PERIODE = '".$periode."'
-		 ----TOTAL UNDANGAN
+		FROM Register_Tamu where kategori= '".$kategori."' 
+        AND PERIODE = '".$periode."') ----TOTAL UNDANGAN
 			UNION ALL
 		(SELECT COUNT(B.NO_REGISTER) AS JUMLAH, ISNULL(SUM(B.JUMLAH),0) AS PAX
 		FROM Register_Tamu B
