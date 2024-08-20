@@ -44,6 +44,7 @@ $router->group(['prefix' => '/undangan'], function () use ($router) {
         $router->get('getKategori',  ['uses' => 'UndanganController@getListKategori']);  
         $router->get('getListZona',  ['uses' => 'UndanganController@getListZona']);  
         $router->get('getListZonaDtl',  ['uses' => 'UndanganController@getListZonaDtl']);  
+        $router->get('getListPerusahaan',  ['uses' => 'UndanganController@getListPerusahaan']);  
         
         $router->get('getDaftarHadir', ['uses' => 'LapUndangan@get_daftar_hadir']);
         $router->get('getDaftarBelum', ['uses' => 'LapUndangan@get_daftar_belum']);

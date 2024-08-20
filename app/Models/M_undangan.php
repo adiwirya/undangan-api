@@ -12,6 +12,7 @@ class M_undangan extends Model
 	public static function getDisplayUndangan($kategori,$no_barcode,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
+		->leftJoin('AGEN_HDR AS B', 'A.PERUSAHAAN', '=', 'B.NO_AGEN')
 		->select(
 			DB::RAW("LTRIM(RTRIM(A.NO_REGISTER)) AS NO_BARCODE"), 
 			DB::RAW("ISNULL(LTRIM(RTRIM(UPPER(A.KATEGORI))),'-') AS KATEGORI"), 
@@ -31,7 +32,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.JML_VEGETARIAN)),'0') AS JML_VEGETARIAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_ANGPAO)),'-') AS FLAG_ANGPAO"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_TITIP_ANGPAO)),'-') AS FLAG_TITIP_ANGPAO"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.PERUSAHAAN)),'-') AS PERUSAHAAN"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(B.NAMA_AGEN)),'-') AS PERUSAHAAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(LEN(A.PERUSAHAAN))),0) AS LEN_PERUSAHAAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.NO_KURSI)),'-') AS NO_MEJA"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM"),
@@ -81,6 +82,7 @@ class M_undangan extends Model
 		->where('A.KATEGORI', $kategori)
 		->where('A.PERIODE', $periode)
 		->where('A.NO_REGISTER', $no_barcode)
+		
 		->get();
 				
 		return $q;
@@ -89,6 +91,7 @@ class M_undangan extends Model
 	public static function getBarcodeNama($kategori,$nama,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
+		->leftJoin('AGEN_HDR AS B', 'A.PERUSAHAAN', '=', 'B.NO_AGEN')
 		->select(
 			DB::RAW("LTRIM(RTRIM(A.NO_REGISTER)) AS NO_BARCODE"), 
 			DB::RAW("ISNULL(LTRIM(RTRIM(UPPER(A.KATEGORI))),'-') AS KATEGORI"), 
@@ -108,7 +111,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.JML_VEGETARIAN)),'0') AS JML_VEGETARIAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_ANGPAO)),'-') AS FLAG_ANGPAO"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_TITIP_ANGPAO)),'-') AS FLAG_TITIP_ANGPAO"),
-			DB::RAW("ISNULL(LTRIM(RTRIM(A.PERUSAHAAN)),'-') AS PERUSAHAAN"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(B.NAMA_AGEN)),'-') AS PERUSAHAAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(LEN(A.PERUSAHAAN))),0) AS LEN_PERUSAHAAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.NO_KURSI)),'-') AS NO_MEJA"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM"),
@@ -185,7 +188,7 @@ class M_undangan extends Model
 		ISNULL(LTRIM(RTRIM(A.JML_VEGETARIAN)),'0') AS JML_VEGETARIAN,
 		ISNULL(LTRIM(RTRIM(A.FLAG_ANGPAO)),'-') AS FLAG_ANGPAO,
 		ISNULL(LTRIM(RTRIM(A.FLAG_TITIP_ANGPAO)),'-') AS FLAG_TITIP_ANGPAO,
-		ISNULL(LTRIM(RTRIM(A.PERUSAHAAN)),'-') AS PERUSAHAAN,
+		ISNULL(LTRIM(RTRIM(B.NAMA_AGEN)),'-') AS PERUSAHAAN,
 		ISNULL(LTRIM(RTRIM(LEN(A.PERUSAHAAN))),0) AS LEN_PERUSAHAAN,
 		ISNULL(LTRIM(RTRIM(A.NO_KURSI)),'-') AS NO_MEJA,
 		ISNULL(LTRIM(RTRIM(A.FLAG_KIRIM)),'-') AS FLAG_KIRIM,
@@ -229,6 +232,8 @@ class M_undangan extends Model
 					END
 	END) AS KODE_WARNA_CONCAT
 	FROM REGISTER_TAMU AS A
+	LEFT JOIN AGEN_HDR B
+	ON A.PERUSAHAAN = B.NO_AGEN
 	WHERE A.KATEGORI  = '".$kategori."'
 	AND A.PERIODE   = '".$periode."'
 	ORDER BY A.NAMA");
@@ -240,6 +245,7 @@ class M_undangan extends Model
 	public static function getTitipan($kategori,$periode)
 	{
 		$q = DB::table('REGISTER_TAMU AS A')
+		->leftJoin('AGEN_HDR B', 'A.PERUSAHAAN', '=', 'B.NO_AGEN')
 		->select(
 			DB::RAW("LTRIM(RTRIM(A.NO_REGISTER)) AS NO_BARCODE"), 
 			DB::RAW("ISNULL(LTRIM(RTRIM(UPPER(A.KATEGORI))),'-') AS KATEGORI"), 
@@ -469,6 +475,18 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(ZONA_OPTION)),'-') AS ZONA")
 		)
 		->where('FLAG_AKTIF', '=', 'A')	
+		->get();
+				
+		return $q;
+	}
+
+	public static function getListPerusahaan()
+	{
+		$q = DB::table('AGEN_HDR')
+		->select(
+			DB::RAW("ISNULL(LTRIM(RTRIM(NO_AGEN)),'-') AS KODE_PERUSAHAAN"),
+			DB::RAW("ISNULL(LTRIM(RTRIM(NAMA_AGEN)),'-') AS NAMA_PERUSAHAAN")
+		)
 		->get();
 				
 		return $q;

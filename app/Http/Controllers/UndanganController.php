@@ -182,4 +182,13 @@ class UndanganController extends Controller
 		
 		return response()->json($getListZonaDtl);
 	}
+
+	public function getListPerusahaan(Request $r)
+	{	
+		$vuser = $r->auth->sub;
+
+		$getListPerusahaan = M_undangan::getListPerusahaan();
+		
+		return response()->json($getListPerusahaan);
+	}
 }
