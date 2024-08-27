@@ -82,7 +82,7 @@ class M_undangan extends Model
 		->where('A.KATEGORI', $kategori)
 		->where('A.PERIODE', $periode)
 		->where('A.NO_REGISTER', $no_barcode)
-		
+		->limit(1)
 		->get();
 				
 		return $q;
@@ -161,6 +161,7 @@ class M_undangan extends Model
 		->where('A.KATEGORI', $kategori)
 		->where('A.NAMA', $nama)
 		->where('A.PERIODE', $periode)
+		->limit(1)
 		->get();
 				
 		return $q;
@@ -487,6 +488,7 @@ class M_undangan extends Model
 			DB::RAW("ISNULL(LTRIM(RTRIM(NO_AGEN)),'-') AS KODE_PERUSAHAAN"),
 			DB::RAW("ISNULL(LTRIM(RTRIM(NAMA_AGEN)),'-') AS NAMA_PERUSAHAAN")
 		)
+		->orderby('NAMA_PERUSAHAAN')
 		->get();
 				
 		return $q;

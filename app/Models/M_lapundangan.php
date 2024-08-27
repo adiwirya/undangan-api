@@ -475,7 +475,7 @@ class M_lapundangan extends Model
         AND PERIODE = '".$periode."' 
         AND HADIR ='Y' -- HADIR
         AND ISNULL(JML_KONFIRMASI_HADIR,0) >= 0
-        AND  AND FLAG_TAMBAHAN ='Y' -- TOTAL TAMBAHAN
+        AND FLAG_TAMBAHAN ='Y' -- TOTAL TAMBAHAN
         UNION ALL
         SELECT 'Total Souvenir' AS NAMA, ISNULL(SUM(TAMBAH_GOODIEBAG),0) AS JUMLAH
         from REGISTER_TAMU
